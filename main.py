@@ -8,7 +8,14 @@ inf = math.inf
 
 
 
-def covidSimulator(peopleNum,node_to_who,initCovidNum,rapidTestLimit):
+def covidSimulator(arg):
+    
+    peopleNum = arg['peopleNum']
+    node_to_who = arg['node_to_who']
+    initCovidNum = arg['initCovidNum']
+    rapidTestLimit = arg['rapidTestLimit']
+    p = arg['p']
+
     peopleNum = max(1000,peopleNum)
     everyMedPeoWorkLimit = 150
     dayTrack = 14
@@ -53,6 +60,7 @@ def covidSimulator(peopleNum,node_to_who,initCovidNum,rapidTestLimit):
             'people4':people4,
             'people5':people5,
             'q':q,
+            'p':p,
             'graphDay':graphDay,
         }
         subFunc(arg)
@@ -71,13 +79,13 @@ def covidSimulator(peopleNum,node_to_who,initCovidNum,rapidTestLimit):
             graphDay.pop(deleteGraphDayTmp,None)
         day += 1
 
-def test():
-    print(len({}.keys()))
 
 if __name__ == '__main__':
-    peopleNum = 100000   # 總人口
-    node_to_who = 20  # 每人與人連結個數
-    initCovidNum = 400  # 起初感染源
-    rapidTestLimit = 10000  # 快篩最大量 
-
-    cProfile.run('covidSimulator(peopleNum ,node_to_who,initCovidNum,rapidTestLimit )')
+    arg ={
+        'peopleNum' : 100000 ,  # 總人口
+        'node_to_who' : 20,  # 每人與人連結個數
+        'initCovidNum' : 40 , # 起初感染源
+        'rapidTestLimit' : 10000 , # 快篩最大量 
+        'p' : 0.05 , # 確診陽性快篩機率
+    }
+    cProfile.run('covidSimulator( arg )')
