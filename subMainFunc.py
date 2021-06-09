@@ -30,6 +30,8 @@ def subFunc(arg): # one level ver. (Hashmap)
     people4 = arg['people4']
     people5 = arg['people5']
     q = arg['q']
+    p = arg['p']
+
     graphDay = arg['graphDay']
     # initialize
     dayToPeople1[day] = {}
@@ -39,7 +41,6 @@ def subFunc(arg): # one level ver. (Hashmap)
     else:
         node_to_who = node_to_who if node_to_who <= ( peopleNum - len(people1.keys()) )  else ( peopleNum - len(people1.keys()) ) # 防呆
     node_to_who = int(2e7/peopleNum) if peopleNum * node_to_who > 2e7 else node_to_who  
-    p = 0.05
     # make the graph
     G = DirectedGraph()
     if day == 0:
