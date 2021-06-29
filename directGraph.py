@@ -30,7 +30,7 @@ class DirectedGraph():
 
     def is_vertex_in_graph(self,key):
         if type(key) != int:
-            raise 'Wrong input: is_edge_in_graph() key is not int'
+            raise 'Wrong input: is_vertex_in_graph() key is not int'
         try:
             self._vertices_list[key]
             return True
@@ -49,10 +49,16 @@ class DirectedGraph():
         if type(value) != dict:
             raise 'Wrong input: set_vertex_value() value is not dictionary'
         if self.is_vertex_in_graph(key):
-            self._vertices_list[self.vertex_num].value = value
+            self._vertices_list[key].value = value
         else:
             raise 'Wrong: set_vertex_value() no this vertex'
             
+    def set_vertex_specific_value(self,key,specifickey, specificvalue):
+        if self.is_vertex_in_graph(key):
+            self._vertices_list[key].value[specifickey] = specificvalue
+        else:
+            raise 'Wrong: set_vertex_specific_value() no this vertex'
+
     def delete_vertex(self,key):
         if type(key) != int:
             raise 'Wrong input: delete_vertex() key is not int'
@@ -98,9 +104,18 @@ class DirectedGraph():
         else:
             raise 'Wrong: set_edge_value() no this edges'
 
+    def set_edge_specific_value(self,fromkey,tokey,specifickey,specificvalue):
+        if type(fromkey) != int or type(tokey) != int:
+            raise 'Wrong input: set_edge_specific_value() key is not int'
+        if self.is_edge_in_graph(fromkey,tokey):
+            self._edges_list[(fromkey,tokey)].value[specifickey] = specificvalue
+        else:
+            raise 'Wrong: set_edge_specific_value() no this edges'
+
+
     def delete_edge(self,fromkey,tokey):
         if type(fromkey) != int or type(tokey) != int:
-            raise 'Wrong input: set_edge_value() key is not int'
+            raise 'Wrong input: delete_edge() key is not int'
         if self.is_edge_in_graph(fromkey,tokey):
             self.edge_num -= 1
             self._edges_list.pop((fromkey,tokey),None)
@@ -170,7 +185,9 @@ def test1():
     g.delete_edge(6,8)
     check('刪除邊測試',g)
     print()
+    g.set_vertex_specific_value(4,'test','hello')
     print(4,'->value:',g.get_vertex_value(4))
+    print(2,'->value:',g.get_vertex_value(2))
     print((4,8),'->value:',g.get_edge_value(4,8))
 if __name__ == '__main__':
     test1()
