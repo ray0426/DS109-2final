@@ -186,8 +186,10 @@ def test1():
     check('刪除邊測試',g)
     print()
     g.set_vertex_specific_value(4,'test','hello')
+    g.set_edge_specific_value(4,8,'distance',4)
     print(4,'->value:',g.get_vertex_value(4))
     print(2,'->value:',g.get_vertex_value(2))
     print((4,8),'->value:',g.get_edge_value(4,8))
+    print((2,8),'->value:',g.get_edge_value(2,8))
 if __name__ == '__main__':
     test1()
