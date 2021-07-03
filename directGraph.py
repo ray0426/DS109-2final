@@ -151,7 +151,20 @@ class DirectedGraph():
             return self._edges_list[(fromkey,tokey)].value
         except:
             raise 'Wrong: get_edge_value() no this edge'
-
+        
+    def get_search_list(self,specificKey,specificValue):
+        ans = []
+        for idx,x in self._vertices_list.items():
+            try:
+                if type(specificValue) == str:
+                    if x.value[specificKey].lower().strip() == specificValue.lower().strip():
+                        ans.append(idx)
+                else:
+                    if x.value[specificKey] == specificValue:
+                        ans.append(idx)
+            except:
+                pass                            
+        return ans
 
 
 def check(s,g):
@@ -172,12 +185,19 @@ def test1():
     print(g.get_vertex_in_neighbors(5),'->5')
     print()
     for i in range(10):
-        g.add_vertex({'name':'hello'})
+        if i % 2 == 0:
+            g.add_vertex({'name':'hello','mod':0})
+        elif i % 2 == 1:
+            g.add_vertex({'name':'hello','mod':' 1 '})
     for i in range(10):
         for j in range(i+1,10):
             g.add_edge(i,j,{'distance':2})
     check('重複新增點和邊測試',g)
     print('11->',g.get_vertex_out_neighbors(11))
+    print()
+    print('搜尋function')
+    print('get mod == 0 ->',g.get_search_list('mod',0))
+    print('get mod == "1" ->',g.get_search_list('mod','1'))
     print()
     for i in [1,3,5,7,9]:
         g.delete_vertex(i)
