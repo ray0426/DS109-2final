@@ -27,16 +27,16 @@ def remove_relation(graph, key):
             graph.delete_edge(key[j], key[i])
     return
 
-def insert_infected(graph, key, time):
-    for i in range(0, len(key)):
-        graph.set_vertex_specific_value(key[i], 'infected-time', time)
+def insert_infected(graph, keys, time) -> None:
+    for i in range(0, len(keys)):
+        graph.set_vertex_specific_value(keys[i], 'infected-time', time)
     return
 
 def new_relative(graph, time):
     relative = []
     for idx,x in graph._vertices_list.items():
         value = graph.get_vertex_value(idx)
-        if (value['infected-time'] == time):
+        if (value['infectable'] == time):
             relative += graph.get_vertex_out_neighbors(idx)
     relative = list(set(relative))
     return relative    #回傳新一波被感染的人
@@ -45,7 +45,7 @@ def show_infected(graph, specifickey):
     infected = []
     for idx,x in graph._vertices_list.items():
         value = graph.get_vertex_value(idx)
-        if (value['infected-time'] != ''):      # --> 我把time不是0的都當作是感染者
+        if (value['infectable'] != ''):      # --> 我把time不是0的都當作是感染者
             infected += [idx]
             if (specifickey != None):
                 print(value[specifickey], end = ' ')
@@ -53,26 +53,30 @@ def show_infected(graph, specifickey):
         print('\n', end = '')
     return infected
 
-def isolation(graph, isolated, free, time):
-    for i in range(0, len(isolated)):
-        graph.set_vertex_specific_value(isolated[i], 'isolated-start', time)
-    for i in range(0, len(free)):
-        graph.set_vertex_specific_value(free[i], 'isolated-end', time)
+def isolation(graph, isolateds, frees, time):
+    for i in range(0, len(isolateds)):
+        graph.set_vertex_specific_value(isolateds[i], 'isolated-start', time)
+    for i in range(0, len(frees)):
+        graph.set_vertex_specific_value(frees[i], 'isolated-end', time)
 
+def set_infectable(graph, keys, times):
+    for i in range(0, len(keys)):
+        graph.set_vertex_specific_value(keys[i], 'infectable', times[i])
 
 if __name__ == '__main__':
     graph = DirectedGraph()
     n = add_people(graph, [{'name': 'ray', 'abc': '123', 'infected-time': '', 'isolated-start' : '',
-    'isolated-end' : ''},{'name': 'aaa', 'abc': '456', 'infected-time': '', 'isolated-start' : '',
-    'isolated-end' : ''},{'name': 'bbb', 'abc': '789', 'infected-time': '', 'isolated-start' : '',
-    'isolated-end' : ''}])
+    'isolated-end' : '', 'infectable' : ''},{'name': 'aaa', 'abc': '456', 'infected-time': '', 'isolated-start' : '',
+    'isolated-end' : '', 'infectable' : ''},{'name': 'bbb', 'abc': '789', 'infected-time': '', 'isolated-start' : '',
+    'isolated-end' : '', 'infectable' : ''}])
     add_relation(graph, [0,1,2], {'distance':1})
     print(n)
     q = add_people(graph, [{'name': 'bbb', 'abc': '789', 'infected-time': '', 'isolated-start' : '',
-    'isolated-end' : ''}, {'name': 'bbb', 'abc': '789', 'infected-time': '', 'isolated-start' : '',
-    'isolated-end' : ''}])
+    'isolated-end' : '', 'infectable' : ''}, {'name': 'bbb', 'abc': '789', 'infected-time': '', 'isolated-start' : '',
+    'isolated-end' : '', 'infectable' : ''}])
     print(q)
     insert_infected(graph, [2,4], '2021/6/5')
+    set_infectable(graph, [2,4], ['2021/6/4', '2021/6/4'])
     add_relation(graph, [1,3,4],{'distance':1})
     s = new_relative(graph, '2021/06/06')
     print(s)
@@ -80,7 +84,6 @@ if __name__ == '__main__':
     print(p)
     isolation(graph, [2,4], [], '2021/06/07')
     isolation(graph, [], [2,4], '2021/06/08')
-    graph.delete_vertex(2)
     for idx,x in graph._vertices_list.items():
         value = graph.get_vertex_value(idx)
         print(value)
