@@ -52,7 +52,7 @@ def test1():
     set_infectable(g, [2,4], ['2021/6/4', '2021/6/4'])
     set_vertex_tmp_neighbors(g,2,'2021/6/6-17:20',[1,3,6])
     set_vertex_tmp_neighbors(g,4,'2021/6/7-21:03',[6,8,9])
-    ans = get_tracked_n_people(g)
+    ans = get_tracked_n_people(g,6)
     print(ans)
 
 if __name__ == '__main__':
