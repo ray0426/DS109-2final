@@ -41,7 +41,7 @@ def new_relative(graph, time):
     relative = list(set(relative))
     return relative    #回傳新一波被感染的人
 
-def show_infected(graph, specifickey):
+def show_infected(graph, specifickey=None):
     infected = []
     for idx,x in graph._vertices_list.items():
         value = graph.get_vertex_value(idx)

@@ -4,6 +4,7 @@ class Vertex():
         self.value = value # key:哪些關係點進這個vertex
         self.out_neighbors = {}
         self.in_neighbors = {}
+        self.tmp_neighbors = []
 
 
 class Edge():
@@ -18,6 +19,7 @@ class DirectedGraph():
         self.value = {}  # 額外Graph(例如這個圖是用來幹嘛的?)
         self.vertex_num = 0 # vertex總數
         self.edge_num = 0 # edge總數
+        self.outdated = 0 # now
 
     def is_edge_in_graph(self,fromkey,tokey):
         if type(fromkey) != int or type(tokey) != int:
