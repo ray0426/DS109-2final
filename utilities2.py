@@ -21,7 +21,7 @@ def find_contacted(graph, keys):
     contacts = list(set(contacts))
     return contacts
 
-def show_vertex_status(graph, sidx, eidx):
+def show_vertex_status(graph, sidx, eidx, show_all):
     print("=============================")
     print("graph status:")
     print("-----------------------------")
@@ -38,13 +38,14 @@ def show_vertex_status(graph, sidx, eidx):
         vertex.value['isolated-end'] == "":
             NumIsolated += 1
     print("total isolation: " + str(NumIsolated))
-    print("print people status:")
-    fields = ['id', 'age', 'birth', 'infected-time']
-    for idx, vertex in graph._vertices_list.items():
-        print("name: " + str(vertex.value['name']), end='')
-        for key in fields:
-            print(", " + str(key) + ": " + str(vertex.value[key]), end='')
-        print()
+    if show_all:
+        print("print people status: ")
+        fields = ['id', 'age', 'birth', 'infected-time']
+        for idx, vertex in graph._vertices_list.items():
+            print("name: " + str(vertex.value['name']), end='')
+            for key in fields:
+                print(", " + str(key) + ": " + str(vertex.value[key]), end='')
+            print()
 
 
 
@@ -61,7 +62,7 @@ if __name__ == '__main__':
     set_vertex_tmp_neighbors(graph, 2, '2021/6/6-17:20', [1, 3, 7])
     set_vertex_tmp_neighbors(graph, 2, '2021/6/7-18:20', [5, 4, 8])
     set_vertex_tmp_neighbors(graph, 0, '2021/6/6-18:20', [1, 3, 7])
-    show_vertex_status(graph, 0, 100)
+    show_vertex_status(graph, 0, 100, false)
     #print(n)
     print(find_contacted(graph, [0]))
     print(find_contacted(graph, [2]))
