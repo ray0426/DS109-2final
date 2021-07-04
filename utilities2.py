@@ -63,7 +63,7 @@ if __name__ == '__main__':
     set_vertex_tmp_neighbors(graph, 2, '2021/6/6-17:20', [1, 3, 7])
     set_vertex_tmp_neighbors(graph, 2, '2021/6/7-18:20', [5, 4, 8])
     set_vertex_tmp_neighbors(graph, 0, '2021/6/6-18:20', [1, 3, 7])
-    show_vertex_status(graph, 0, 100, false)
+    show_vertex_status(graph, 0, 100, False)
     #print(n)
     print(find_contacted(graph, [0]))
     print(find_contacted(graph, [2]))
