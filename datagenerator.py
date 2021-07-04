@@ -1,7 +1,7 @@
 import json
 
 if __name__ == '__main__':
-    n = 10
+    n = 10000
     result = []
     for i in range(n):
         result.append({
@@ -13,7 +13,9 @@ if __name__ == '__main__':
             'gender': 'gender' + str(i),
             'address': 'add' + str(i),
             'phone': 'phone' + str(i),
+            'job' : '',
             'infected-time': '',
+            'infectable' : '',
             'isolated-start': '',
             'isolated-end': ''
             })
