@@ -12,7 +12,7 @@ def add_tmp_relation(graph, keys, time):
     for i in range(0, len(keys)):
         set_vertex_tmp_neighbors(graph, keys[i], time, keys[:i] + keys[i + 1:])
 
-def get_tracked_people(graph):
+def get_tracked_n_people(graph,n):
     whoCov19 = show_infected(graph)
     ans = {}
     soft_const = 1
@@ -40,8 +40,9 @@ def get_tracked_people(graph):
 
     lst = [[ans[x],x] for x in ans]
     lst.sort()
+    n = min(n,len(lst))
     ans = list(zip(*lst))[1]
-    return ans
+    return ans[:n]
             
 def test1():
     g = DirectedGraph()
@@ -61,7 +62,7 @@ def test1():
     add_tmp_relation(g, vertex, '2021/6/4-21:03')
     for idx,x in g._vertices_list.items():
         print(g._vertices_list[idx].tmp_neighbors)
-    ans = get_tracked_people(g)
+    ans = get_tracked_n_people(g,6)
     print(ans)
 
 if __name__ == '__main__':
