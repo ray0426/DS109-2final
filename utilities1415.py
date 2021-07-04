@@ -57,11 +57,10 @@ def test1():
     add_relation(g, [7,8,9], {'distance':1})
     insert_infected(g, [2,4], '2021/6/5')
     set_infectable(g, [2,4], ['2021/6/4', '2021/6/4'])
-    #set_vertex_tmp_neighbors(g,2,'2021/6/6-17:20',[1,3,6])
-    #set_vertex_tmp_neighbors(g,4,'2021/6/7-21:03',[6,8,9])
-    add_tmp_relation(g, vertex, '2021/6/4-21:03')
-    for idx,x in g._vertices_list.items():
-        print(g._vertices_list[idx].tmp_neighbors)
+    # set_vertex_tmp_neighbors(g,2,'2021/6/6-17:20',[1,3,6])
+    # set_vertex_tmp_neighbors(g,4,'2021/6/7-21:03',[6,8,9])
+    add_tmp_relation(g, [1,3,6,2] , '2021/6/4-21:03')
+    add_tmp_relation(g, [4,6,8,9] , '2021/6/4-21:03')
     ans = get_tracked_n_people(g,6)
     print(ans)
 
