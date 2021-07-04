@@ -26,7 +26,7 @@ def show_personal_status(graph):
     print("format: [0, 2, 3, 5, 6]")
     keys = eval(input(""))
     print("print people status: ")
-    fields = ['id', 'age', 'job', 'infected-time']
+    fields = ['id', 'age', 'job', 'infected-time', 'infectable',"isolated-start","isolated-end"]
     for key in keys:
         print("name: " + str(graph._vertices_list[key].value['name']), end='')
         for f in fields:
@@ -57,7 +57,25 @@ def add_infected(graph):
     print("please input infected time")
     print("format: 2021/6/7")
     infeced_time = input("")
+    try:
+        r = time.strptime(infeced_time,'%Y/%m/%d')
+        infeced_time = time.strftime('%Y/%m/%d',r)
+    except:
+        print('Unsuccessful: wrong in time format!')
+        int('wrong in key')
     insert_infected(graph, people, infeced_time)
+    ans = []
+    for x in people:
+        while True:
+            t = input('please input infectable time for {} (e g. 2021/6/6) = '.format(x)).lower().strip()
+            try:
+                r = time.strptime(t,'%Y/%m/%d')
+                t = time.strftime('%Y/%m/%d',r)
+                ans.append(t)
+                break
+            except:
+                print('wrong in format {} you input for {}'.format(t,x))
+    set_infectable(graph, people, ans)
     print("add infected people complete")
 
 def add_tmp_relation_main(graph):
@@ -78,17 +96,22 @@ def find_contacted_main(graph):
     print("find contacted complete")
 
 def find_by(graph):
-    c = input('please input find by(name = n, job = j, age = a, gender = g, infected-time = i) = ').lower().strip()[0]
-    d = {'n':'name','j':'job','a':'age','g':'gender','i':'infected-time'}
+    sss ='please input find by (name = n, job = j, age = a, gender = g, infected-time = i, infectable = o, isolated-start = s, isolated-end = e) = '
+    c = input(sss).lower().strip()[0]
+    d = {'n':'name','j':'job','a':'age','g':'gender','i':'infected-time','o':'infectable','s':'isolated-start','e':'isolated-end'}
     try:
         d[c]
     except:
         return
     try:
         value = input('input a value using to search data {} = '.format(d[c])).lower().strip()
+        if c in ['s','e','o','i']:
+            v = time.strptime(value,'%Y/%m/%d')
+            value = time.strftime('%Y/%m/%d',v)
         print(graph.get_search_list(d[c],value))
     except:
         print('find nothing')
+
 def save_data(graph):
     try:
         file = open(b"fileGraph.p","wb")
@@ -104,10 +127,47 @@ def load_data():
     except:
         print('load data -> exit(): unsuccessful')
 
+def add_isolated_start_end():
+    print("please input people you wanna change their isolated start or end")
+    print("format: [3, 5, 6, 7]")
+    people = eval(input(""))
+    ans = {}
+    print('time format you should type like this below')
+    print("time format1: 2021/6/8-2021/6/19")
+    print("time format2: 2021/6/8-?")
+    for x in people:
+        while True:
+            print("please input time format for {}".format(x))
+            times = input('')
+            try:
+                if len(times)- len(times.replace('-','')) != 1:
+                    int('WroNg')
+                else:
+                    tmp = [x.strip() for x in times.split('-')]
+                    r1 = time.strptime(tmp[0],'%Y/%m/%d')
+                    t1 = time.strftime('%Y/%m/%d',r1)
+                    try:
+                        ans[t1][0].append(x)
+                    except:
+                        ans[t1] = [[x],[]]
+                    if tmp[1].find('?') == -1:
+                        r2 = time.strptime(tmp[1],'%Y/%m/%d')
+                        t2 = time.strftime('%Y/%m/%d',r2)
+                        try:
+                            ans[t2][1].append(x)
+                        except:
+                            ans[t2] = [[],[x]]
+                    break
+            except:
+                print('time format wrong for {} your input is {}'.format(x,times))        
+    for x in ans:
+        isolation(graph,ans[x][0],ans[x][1],x)
+    print("add isolated time complete")
+
 
 if __name__ == '__main__':
     print("start program")
-    print(graph)
+    graph = DirectedGraph()
     while True:
         command = input("please input command: ").lower().strip()
         command = command.split(' ')
@@ -170,19 +230,25 @@ if __name__ == '__main__':
             except:
                 print('add infected -> exit()')            
             continue
-        elif command == 'add tmp relation' or  command == 'r9':
+        elif command == 'add isolated time' or  command == 'r9':
+            try:
+                add_isolated_start_end()
+            except:
+                print('add isolated time -> exit()')            
+            continue
+        elif command == 'add tmp relation' or  command == 'r10':
             try:
                 add_tmp_relation_main(graph)
             except:
                 print('add tmp relation -> exit()')
             continue
-        elif command == 'find contacted' or  command == 'r10':
+        elif command == 'find contacted' or  command == 'r11':
             try:
                 find_contacted_main(graph)
             except:
                 print('find contacted -> exit()')
             continue
-        elif command == 'find people by' or  command == 'r11':
+        elif command == 'find people by' or  command == 'r12':
             try:
                 find_by(graph)
             except:
