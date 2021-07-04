@@ -8,6 +8,10 @@ def set_vertex_tmp_neighbors(graph,key,time_string,neighbors):
         raise 'Wrong: in set_vertex_tmp_neighbors() no this key'
     graph._vertices_list[key].tmp_neighbors.append({t:neighbors})
 
+def add_tmp_relation(graph, keys, time):
+    for i in range(0, len(keys)):
+        set_vertex_tmp_neighbors(graph, keys[i], time, keys[:i] + keys[i + 1:])
+
 def get_tracked_n_people(graph,n):
     whoCov19 = show_infected(graph)
     ans = {}
@@ -42,16 +46,22 @@ def get_tracked_n_people(graph,n):
             
 def test1():
     g = DirectedGraph()
+    vertex = []
     for i in range(10):
-        add_people(g,[{'name': 'name{}'.format(i), 'abc': '123', 'infected-time': '', 'isolated-start' : '',\
+        v = add_people(g,[{'name': 'name{}'.format(i), 'infected-time': '', 'isolated-start' : '',\
             'isolated-end' : '', 'infectable' : ''}])
+        vertex += v
+    #print(vertex)
     add_relation(g, [0,1,2], {'distance':1})
     add_relation(g, [3,4], {'distance':1})
     add_relation(g, [7,8,9], {'distance':1})
     insert_infected(g, [2,4], '2021/6/5')
     set_infectable(g, [2,4], ['2021/6/4', '2021/6/4'])
-    set_vertex_tmp_neighbors(g,2,'2021/6/6-17:20',[1,3,6])
-    set_vertex_tmp_neighbors(g,4,'2021/6/7-21:03',[6,8,9])
+    #set_vertex_tmp_neighbors(g,2,'2021/6/6-17:20',[1,3,6])
+    #set_vertex_tmp_neighbors(g,4,'2021/6/7-21:03',[6,8,9])
+    add_tmp_relation(g, vertex, '2021/6/4-21:03')
+    for idx,x in g._vertices_list.items():
+        print(g._vertices_list[idx].tmp_neighbors)
     ans = get_tracked_n_people(g,6)
     print(ans)
 
