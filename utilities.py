@@ -45,7 +45,7 @@ def show_infected(graph, specifickey=None):
     infected = []
     for idx,x in graph._vertices_list.items():
         value = graph.get_vertex_value(idx)
-        if (value['infectable'] != ''):      # --> 我把time不是0的都當作是感染者
+        if (value['infected-time'] != ''):      # --> 我把time不是0的都當作是感染者
             infected += [idx]
             if (specifickey != None):
                 print(value[specifickey], end = ' ')
