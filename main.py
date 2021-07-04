@@ -6,10 +6,12 @@ import json
 import pickle
 
 
-def read(graph, filename='data.json'):
+def read(filename='data.json'):
     with open(filename, 'r') as obj:
         data = json.load(obj)
+    graph = DirectedGraph()
     add_people(graph, data)
+    return graph
 
 def read_relation(graph,filename ='relationship.json'):
     with open(filename, 'r') as obj:
@@ -181,7 +183,7 @@ if __name__ == '__main__':
             break
         print("command you input: " + command)
         if command == 'read by default' or  command == 'r1':
-            read(graph)
+            graph = read()
             print("read people data complete!")
             read_relation(graph)
             continue
@@ -194,7 +196,7 @@ if __name__ == '__main__':
         elif command == 'read people'or  command == 'r2':
             try:
                 filename = input("please input people file name: ")
-                read(graph, filename)
+                graph = read(filename)
                 print("read people data complete!")
             except:
                 print('read people -> exit(): wrong file name')
