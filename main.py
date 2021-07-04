@@ -10,6 +10,31 @@ def read(graph, filename):
         data = json.load(obj)
     add_people(graph, data)
 
+def read_relation(graph):
+    filename = input("please input relation file name: ")
+    with open(filename, 'r') as obj:
+        datas = json.load(obj)
+    for data in datas:
+        add_relation(graph, data['people'], {'distance': 0})
+        if data['type'] != 'home':
+            for key in data['people']:
+                graph.set_vertex_specific_value(key, 'job', data['type'])
+    print("read relation data complete!")
+
+def show_personal_status(graph):
+    print("please input people to show")
+    print("format: [0, 2, 3, 5, 6]")
+    keys = eval(input(""))
+    print("print people status: ")
+    fields = ['id', 'age', 'job', 'infected-time']
+    for key in keys:
+        print("name: " + str(graph._vertices_list[key].value['name']), end='')
+        for f in fields:
+            print(", " + str(f) + ": " + \
+                    str(graph._vertices_list[key].value[f]), end='')
+        print()
+    print("show personal status complete")
+
 def add_single_relation(graph):
     print("please input single relation")
     print("format: [3, 6, 7, 8], 0")
@@ -57,8 +82,12 @@ if __name__ == '__main__':
             filename = input("please input people file name: ")
             read(graph, filename)
             print("read people data complete!")
+        elif command == 'read relation':
+            read_relation(graph)
         elif command == 'show status':
             show_vertex_status(graph, 0, 10000, False)
+        elif command == 'show personal status':
+            show_personal_status(graph)
         elif command == 'add single relation':
             add_single_relation(graph)
         elif command == 'add infected':

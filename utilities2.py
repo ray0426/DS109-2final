@@ -7,17 +7,18 @@ import json
 def find_contacted(graph, keys):
     contacts = []
     for key in keys:
-        infected_time = graph.get_vertex_value(key)['infected-time']
-        for neighbors in graph._vertices_list[key].tmp_neighbors:
-            result = time.strptime(infected_time, '%Y/%m/%d')
-            t = int(time.mktime(result))
-            idx = list(neighbors.keys())[0]
-            if idx > t:
-                temp_contects = list(neighbors.values())[0]
-                contacts += temp_contects
+        if graph._vertices_list[key].value['infected-time'] != '':
+            infected_time = graph.get_vertex_value(key)['infected-time']
+            for neighbors in graph._vertices_list[key].tmp_neighbors:
+                result = time.strptime(infected_time, '%Y/%m/%d')
+                t = int(time.mktime(result))
+                idx = list(neighbors.keys())[0]
+                if idx > t:
+                    temp_contects = list(neighbors.values())[0]
+                    contacts += temp_contects
 
-        for i in graph.get_vertex_out_neighbors(key):
-            contacts.append(i)
+            for i in graph.get_vertex_out_neighbors(key):
+                contacts.append(i)
     contacts = list(set(contacts))
     return contacts
 
