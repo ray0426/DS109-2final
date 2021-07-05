@@ -97,6 +97,16 @@ def find_contacted_main(graph):
     print(find_contacted(graph, people))
     print("find contacted complete")
 
+def find_n_people_needed(graph):
+    while True:
+        try:
+            n = int(input("please input 'n'(= an integer) = "))
+            break
+        except:
+            print('wrong input!')
+    print(get_tracked_n_people(graph, n))
+    print("find n people needed complete")
+
 def find_by(graph):
     sss ='please input find by (name = n, job = j, age = a, gender = g, infected-time = i, infectable = o, isolated-start = s, isolated-end = e) = '
     c = input(sss).lower().strip()[0]
@@ -250,7 +260,13 @@ if __name__ == '__main__':
             except:
                 print('find contacted -> exit()')
             continue
-        elif command == 'find people by' or  command == 'r12':
+        elif command == 'find n people needed' or  command == 'r12':
+            try:
+                find_n_people_needed(graph)
+            except:
+                print('find n people needed -> exit()')
+            continue
+        elif command == 'find people by' or  command == 'r13':
             try:
                 find_by(graph)
             except:
